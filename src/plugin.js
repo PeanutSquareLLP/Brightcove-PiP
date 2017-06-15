@@ -9,8 +9,8 @@ const registerPlugin = videojs.registerPlugin || videojs.plugin;
 // const dom = videojs.dom || videojs;
 
 var initPiP = (player, options) => {
-  console.log('PiP starting');
-  var p2 = document.createElement('video');
+  console.log('PiP: starting');
+  let p2 = document.createElement('video');
   p2.setAttribute('data-account-id',player.el().dataset.account);
   p2.setAttribute('data-player-id',player.el().dataset.player);
   p2.setAttribute('data-embed',player.el().dataset.embed);
@@ -20,13 +20,15 @@ var initPiP = (player, options) => {
     let pip = this;
     pip.muted(true);
     player.el().parentNode.insertBefore(pip.el(), player.el());
+    pip.height(options.pipHeight);
+    pip.width(options.pipWidth);
+    console.log("PiP: mini player loaded to DOM");
 
     if (typeof jQuery.ui != 'undefined') {
       $("#player2").draggable({ containment: ".vjs-pip", scroll: false});
-    }
+      console.log("PiP: mini player draggable");
 
-    pip.height(options.pipHeight);
-    pip.width(options.pipWidth);
+    }
     pip.catalog.getVideo(options.vid2, (err, vid)=>{
       pip.catalog.load(vid);
     })
