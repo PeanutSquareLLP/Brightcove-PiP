@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>videojs-pip Demo</title>
+  <link href="dist/videojs-pip.css" rel="stylesheet">
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+      integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+      crossorigin="anonymous"></script>
+  </head>
+
+<body>
+  <div class="containr">
+    <p>test before</p>
+    <video id="videojs-pip-player" data-account="5092057275001" data-player="S1gNveZGxb" data-embed="default" data-application-id class="video-js" controls></video>
+
+    <script src="//players.brightcove.net/5092057275001/S1gNveZGxb_default/index.min.js"></script>
+    <p>test after</p>
+  </div>
+
+  <script src="dist/videojs-pip.js"></script>
+  <script>
+    (function(window, videojs) {
+      var player = window.player = videojs('videojs-pip-player');
+      var options = {};
+      options.vid1 = "5263728079001";
+      options.vid2 = "5436231977001";
+      options.mainHeight = "550px";
+      options.mainWidth = "900px";
+      options.pipHeight = "200px";
+      options.pipWidth = "400px"; 
+      player.pip(options);
+    }(window, window.videojs));
+  </script>
+</body>
+
+</html>
