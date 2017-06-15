@@ -9,7 +9,11 @@ pip plugin
 ## Installation
 
 ```sh
-npm install --save videojs-pip
+git clone https://github.com/RevinKey/Brightcove-PiP.git
+
+npm install
+npm start
+
 ```
 
 ## Usage
