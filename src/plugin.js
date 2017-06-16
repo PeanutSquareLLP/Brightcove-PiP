@@ -8,41 +8,101 @@ const defaults = {};
 const registerPlugin = videojs.registerPlugin || videojs.plugin;
 // const dom = videojs.dom || videojs;
 
+var pipButton = videojs.extend(videojs.ClickableComponent, {
+    constructor: function(player, options) {
+
+        videojs.ClickableComponent.call(this, player, options);
+        // Bind click event for desktop browsers
+        this.on('click', function() {
+          let pip = document.getElementById('pipWrap');
+          if ( pip.style.display === 'none'){
+            pip.style.display = 'block';
+          }else{
+            pip.style.display ='none';
+          }
+        });
+    },
+
+    createEl: function() {
+        return videojs.Button.prototype.createEl.call(this, 'div', {
+            className: 'vjs-pip-button vjs-menu-button vjs-menu-button-popup vjs-control vjs-button',
+            innerHTML: '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAeCAYAAABe3VzdAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYzYxN2JkZi1jYjAzLWUyNGYtYWQ3Ny04MzgxMTA2MDA5Y2IiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NEFBN0M5OTMwRTJEMTFFNzk2RDQ5RUFDMTY4ODE3RTQiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NEFBN0M5OTIwRTJEMTFFNzk2RDQ5RUFDMTY4ODE3RTQiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MjNlMDRjMDYtMjlkNi1hMjRiLWI2YTYtZDdiYzk2ZGIzNDAwIiBzdFJlZjpkb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6Mjc0NmM5ZmUtMGUyZC0xMWU3LWIzZmEtZmQzOWJhM2U3NmZjIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+fQKxPQAAAs5JREFUeNq8mMGO0zAQhu3Eaemyy4ETVx6Awz4QT7cPxJUbVw4IhKDbdpPYONKM9O/PTJK2C5Z+xbUS++vM2DNJLKUEahH6jfyO0G9pDJ/Ra6Frlv6kUa44lmHNZ0Ap+K0BtSLu4x/wABUgC9xo9ANBuoCR4BRmuq8TJRhvyZLcMlhNNVT1oihjeH9EK6YZyzHYtmoj0rEGrOkBqpUU6kmk6/TGM6YF0U26sIK9IiloAsBICxUAHADsKGrliqFQgKF4Lo5kvQnopuq1aCdjW3D5HKC69CRAh6o9WD1DKCy62LPeBPam6pYgNwBobZIM1lO4jczPIYD9WUCF7GQyBbwFyBuBVMBIuxldpoAMN0JcDrBp4tIuxp2rgDuAvAMrnmPBjuDUqifp67rjEiBCdgSpsfix6n04r32pegC4A5wILSWAs3bxBmJxJ5rgPlV9Nw7rYBzSb6vu5dleLLclwIYYytwmwfMtAahqar+qfsAcFmAQF3fS39BZmmitZk0MWq5OcOYlONATuMZqBe4NNEdyXLvKxVgcNGTZhhbFCbewEbQd6JnGmduETAuBHR33ee1D1Tsa+yyxetHczcKCxSqBXqitmrtxHiiUfrBk4vJoDXymtJadNf6CTjP/qlCJNEAfD2F02deqR5rrGwAOxnyjB+cBcl4cqEx6knvvZBwD/KfIOgcDzaEpjvOxC1iMMknBsBLpJCvcX5BJDiJMcb1RJMy6GF3bO5XIwwW5WMusR4BEQHa1CzhSkXmcqUTOrWYmuN8CipAcj2HJgpmst3cqkUvqwT1AohXzWgti/PE7B1Yi11bUe4hFKw4XY1BT0BGs0YPlrn0nUfXg4rK0i6NhxUC/Ty/0VneCsdW72HqBxrNxoOr32vfigV7g89KLu1oxz2ycf/FlIXupM63In+jy//Ft5nnJY3w8sj4iRUPBKfWDs/H4fOQNYYL8EWAAkl+v278JtQcAAAAASUVORK5CYII=" style="width: 100%; height: 100%;"><span class="vjs-control-text">PiP Toggle</span></div>'
+        }, {
+            'aria-live': 'polite',
+        });
+    }
+});
 var initPiP = (player, options) => {
   console.log('PiP: starting');
+  videojs.registerComponent("pipButton", pipButton);
+
+  var buttonIndex = player.controlBar.children().map(function(c) {
+      return c.name();
+  }).indexOf('FullscreenToggle') - 1;
+  player.controlBar.pipToggle = player.controlBar.addChild('pipButton', null, buttonIndex);
+  player.controlBar.pipToggle.el().setAttribute('tabindex', 0);
+
+  let pipWrap = document.createElement('div');
+  pipWrap.setAttribute('class', 'pipWrap');
+  pipWrap.setAttribute('id', 'pipWrap')
+  let swap = document.createElement('div');
+  swap.setAttribute('id', 'swap');
+  swap.innerHTML = "Swap";
   let p2 = document.createElement('video');
-  p2.setAttribute('data-account-id',player.el().dataset.account);
-  p2.setAttribute('data-player-id',player.el().dataset.player);
-  p2.setAttribute('data-embed',player.el().dataset.embed);
-  p2.setAttribute('id',"player2");
-  p2.setAttribute('class',"video-js");
-  bc(p2, {}, function(){
+  pipWrap.appendChild(p2);
+  pipWrap.appendChild(swap);
+  p2.setAttribute('data-account-id', player.el().dataset.account);
+  p2.setAttribute('data-player-id', player.el().dataset.player);
+  p2.setAttribute('data-embed', player.el().dataset.embed);
+  p2.setAttribute('id', "player2");
+  p2.setAttribute('class', "video-js");
+  bc(p2, {}, function(err) {
     let pip = this;
     pip.muted(true);
-    player.el().parentNode.insertBefore(pip.el(), player.el());
+    player.el().parentNode.insertBefore(pipWrap, player.el());
     pip.height(options.pipHeight);
     pip.width(options.pipWidth);
     console.log("PiP: mini player loaded to DOM");
 
     if (typeof jQuery.ui != 'undefined') {
-      $("#player2").draggable({ containment: ".vjs-pip", scroll: false});
+      $("#pipWrap").draggable({containment: ".vjs-pip", scroll: false});
       console.log("PiP: mini player draggable");
 
     }
-    pip.catalog.getVideo(options.vid2, (err, vid)=>{
+    pip.catalog.getVideo(options.vid2, (err, vid) => {
       pip.catalog.load(vid);
     })
-    player.on('play', function(){
+    player.on('play', (evt) => {
       pip.play();
     })
-    player.on('pause', function(){
+    player.on('pause', (evt) => {
       pip.pause();
     })
-  });
-  player.catalog.getVideo(options.vid1, (err, vid)=>{
-    player.catalog.load(vid);
-  })
 
+    player.catalog.getVideo(options.vid1, (err, vid) => {
+      player.catalog.load(vid);
+    })
+    swap.addEventListener('click', (evt) => {
+      console.log("swap Clicked");
+      player.pause();
+      pip.pause();
+      let t = player.currentTime();
+      let tPIP = pip.currentTime();
+
+      player.catalog.getVideo(pip.mediainfo.id, (err, vid) => {
+        player.catalog.load(vid);
+        player.poster(' ');
+        player.currentTime(tPIP);
+        player.play();
+      })
+      pip.catalog.getVideo(player.mediainfo.id, (err, vid) => {
+        pip.catalog.load(vid);
+        pip.poster(' ');
+        pip.currentTime(t);
+        player.play();
+      })
+    })
+  });
 }
 /**
  * Function to invoke when the player is ready.
