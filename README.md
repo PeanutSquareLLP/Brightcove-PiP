@@ -44,7 +44,15 @@ This is the simplest case. Get the script in whatever way you prefer and include
 <script src="//path/to/videojs-pip.min.js"></script>
 <script>
   var player = videojs('my-video');
-
+  var options = {};
+  options.vid1 = "https://secure.brightcove.com/services/mobile/streaming/index/master.m3u8?videoId=5263703258001&pubId=5092057275001&secure=true";
+  options.vid2 = "http://solutions.brightcove.com/bcls/assets/videos/Sea_Anemone.mp4";
+  options.mainHeight = "550px";
+  options.mainWidth = "900px";
+  options.pipHeight = "200px";
+  options.pipWidth = "400px";
+  options.bc = false;
+  player.pip(options);
   player.pip();
 </script>
 ```
