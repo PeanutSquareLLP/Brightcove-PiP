@@ -46,9 +46,14 @@ var initPiP = (player, options) => {
   pipWrap.setAttribute('class', 'pipWrap');
   pipWrap.setAttribute('id', 'pipWrap')
   let swap = document.createElement('div');
+  let hide = document.createElement('div');
+  hide.setAttribute('id', 'hide');
+  hide.innerHTML = "Hide";
+
   swap.setAttribute('id', 'swap');
   swap.innerHTML = "Swap";
   let p2 = document.createElement('video');
+  pipWrap.appendChild(hide);
   pipWrap.appendChild(p2);
   pipWrap.appendChild(swap);
   p2.setAttribute('data-account-id', player.el().dataset.account);
@@ -101,6 +106,10 @@ var initPiP = (player, options) => {
         pip.currentTime(t);
         player.play();
       })
+    })
+    hide.addEventListener('click', (evt) => {
+        pip.toggleClass('vjs-hidden');
+
     })
   });
 }
