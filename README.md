@@ -16,6 +16,21 @@ npm start
 
 ```
 
+
+## TODO
+
+1. Better UX for hiding/showing the PIP
+2. See if we can move away from using Document to create elements, just use VideoJS framework to create components.
+3. Test what happens with Live streams/DVRUX plugin
+4. Make it VideoJS and Brightcove Catalog compliant
+5. QA/ Test on different Browsers.
+
+## Contributing
+1. Branch master
+2. Make changes
+3. Create PR for review
+4. Someone will review for approval and merging
+
 ## Usage
 
 To include videojs-pip on your website or web application, use any of the following methods.
@@ -34,34 +49,6 @@ This is the simplest case. Get the script in whatever way you prefer and include
 </script>
 ```
 
-### Browserify/CommonJS
-
-When using with Browserify, install videojs-pip via npm and `require` the plugin as you would any other module.
-
-```js
-var videojs = require('video.js');
-
-// The actual plugin function is exported by this module, but it is also
-// attached to the `Player.prototype`; so, there is no need to assign it
-// to a variable.
-require('videojs-pip');
-
-var player = videojs('my-video');
-
-player.pip();
-```
-
-### RequireJS/AMD
-
-When using with RequireJS (or another AMD library), get the script in whatever way you prefer and `require` the plugin as you normally would:
-
-```js
-require(['video.js', 'videojs-pip'], function(videojs) {
-  var player = videojs('my-video');
-
-  player.pip();
-});
-```
 
 ## License
 
