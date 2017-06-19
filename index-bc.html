@@ -29,13 +29,13 @@
     (function(window, videojs) {
       var player = window.player = videojs('videojs-pip-player');
       var options = {};
-      options.vid1 = "https://secure.brightcove.com/services/mobile/streaming/index/master.m3u8?videoId=5263703258001&pubId=5092057275001&secure=true";
-      options.vid2 = "http://solutions.brightcove.com/bcls/assets/videos/Sea_Anemone.mp4";
+      options.vid1 = "5263728079001";
+      options.vid2 = "5436231977001";
       options.mainHeight = "550px";
       options.mainWidth = "900px";
       options.pipHeight = "200px";
       options.pipWidth = "400px";
-      options.bc = false;
+      options.bc = true;
       player.pip(options);
     }(window, window.videojs));
   </script>

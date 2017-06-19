@@ -34,6 +34,7 @@ var pipButton = videojs.extend(videojs.ClickableComponent, {
 });
 var initPiP = (player, options) => {
   console.log('PiP: starting');
+
   videojs.registerComponent("pipButton", pipButton);
 
   var buttonIndex = player.controlBar.children().map(function(c) {
@@ -74,9 +75,80 @@ var initPiP = (player, options) => {
       console.log("PiP: mini player draggable");
 
     }
-    pip.catalog.getVideo(options.vid2, (err, vid) => {
-      pip.catalog.load(vid);
-    })
+    if (options.bc) {
+      console.log("Using VideoCloud Catalog");
+      pip.catalog.getVideo(options.vid2, (err, vid) => {
+        pip.catalog.load(vid);
+      })
+      player.catalog.getVideo(options.vid1, (err, vid) => {
+        player.catalog.load(vid);
+      })
+      swap.addEventListener('click', (evt) => {
+        console.log("swap Clicked");
+        player.pause();
+        pip.pause();
+        let t = player.currentTime();
+        let tPIP = pip.currentTime();
+
+        player.catalog.getVideo(pip.mediainfo.id, (err, vid) => {
+          player.catalog.load(vid);
+          player.poster(' ');
+          player.currentTime(tPIP);
+          player.play();
+        })
+        pip.catalog.getVideo(player.mediainfo.id, (err, vid) => {
+          pip.catalog.load(vid);
+          pip.poster(' ');
+          pip.currentTime(t);
+          player.play();
+        })
+      })
+    }else{
+      console.log("Using VideoJS and Remote Sources");
+      let m3u81;
+      let m3u82;
+      if( options.vid1.includes('m3u8') ){
+        m3u81 =true;
+        player.src({ type: "application/x-mpegURL", src:options.vid1});
+
+      }else{
+        player.src(options.vid1);
+      }
+      if( options.vid2.includes('m3u8') ){
+        m3u82 = true;
+        pip.src({ type: "application/x-mpegURL", src:options.vid2});
+
+      }else{
+        pip.src(options.vid2);
+      }
+
+      swap.addEventListener('click', (evt) => {
+
+        let src1;
+        let src2;
+        console.log("swap Clicked");
+        player.pause();
+        pip.pause();
+        let t = player.currentTime();
+        let tPIP = pip.currentTime();
+        if(m3u81){
+           src1 = player.hls.source_;
+        }else{
+          src1 = player.tech.src()
+        } if (m3u82) {
+          src2 = pip.hls.source_;
+        }else{
+          src2 = pip.tech.src();
+        }
+        pip.src(src1);
+        pip.currentTime(t);
+        player.src(src2);
+        player.currentTime(tPIP);
+        pip.play();
+        player.play();
+      })
+    }
+
     player.on('play', (evt) => {
       pip.play();
     })
@@ -84,29 +156,8 @@ var initPiP = (player, options) => {
       pip.pause();
     })
 
-    player.catalog.getVideo(options.vid1, (err, vid) => {
-      player.catalog.load(vid);
-    })
-    swap.addEventListener('click', (evt) => {
-      console.log("swap Clicked");
-      player.pause();
-      pip.pause();
-      let t = player.currentTime();
-      let tPIP = pip.currentTime();
 
-      player.catalog.getVideo(pip.mediainfo.id, (err, vid) => {
-        player.catalog.load(vid);
-        player.poster(' ');
-        player.currentTime(tPIP);
-        player.play();
-      })
-      pip.catalog.getVideo(player.mediainfo.id, (err, vid) => {
-        pip.catalog.load(vid);
-        pip.poster(' ');
-        pip.currentTime(t);
-        player.play();
-      })
-    })
+
     hide.addEventListener('click', (evt) => {
         pip.toggleClass('vjs-hidden');
 
