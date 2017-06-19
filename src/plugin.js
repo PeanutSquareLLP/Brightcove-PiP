@@ -132,11 +132,11 @@ var initPiP = (player, options) => {
         let t = player.currentTime();
         let tPIP = pip.currentTime();
         if(m3u81){
-           src1 = player.hls.source_;
+           src1 = player.tech_.hls.source_;
         }else{
           src1 = player.tech.src()
         } if (m3u82) {
-          src2 = pip.hls.source_;
+          src2 = pip.tech_.hls.source_;
         }else{
           src2 = pip.tech.src();
         }

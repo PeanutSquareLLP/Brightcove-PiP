@@ -22,7 +22,7 @@ npm start
 1. Better UX for hiding/showing the PIP
 2. See if we can move away from using Document to create elements, just use VideoJS framework to create components.
 3. Test what happens with Live streams/DVRUX plugin
-4. Make it VideoJS and Brightcove Catalog compliant
+4. Issue with swapping twice if videojs remote sources
 5. QA/ Test on different Browsers.
 
 ## Contributing
